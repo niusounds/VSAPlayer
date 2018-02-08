@@ -1,0 +1,8 @@
+<resources>
+    <string name="open_file">ファイルを開く</string>
+    <string name="front">前</string>
+    <string name="back">後ろ</string>
+    <string name="right">右</string>
+    <string name="left">左</string>
+    <string name="use_device_sensor">デバイスのセンサーを使用</string>
+</resources>
