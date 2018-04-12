@@ -22,10 +22,10 @@ android {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    implementation 'androidx.core:core-ktx:0.1'
-    implementation 'com.android.support:appcompat-v7:27.0.2'
+    implementation 'androidx.core:core-ktx:0.3'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    implementation 'com.android.support:design:27.0.2'
+    implementation 'com.android.support:design:27.1.1'
 
     implementation 'com.google.android.exoplayer:exoplayer-core:2.6.1'
     implementation 'com.google.android.exoplayer:extension-gvr:2.6.1'

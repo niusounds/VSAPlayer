@@ -8,8 +8,8 @@ import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
-import androidx.graphics.withRotation
-import androidx.graphics.withTranslation
+import androidx.core.graphics.withRotation
+import androidx.core.graphics.withTranslation
 
 class RotatorView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0) : View(context, attrs, defStyleAttr, defStyleRes) {
 
