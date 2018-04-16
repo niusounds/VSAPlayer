@@ -28,7 +28,6 @@ dependencies {
     implementation 'com.android.support:design:27.1.1'
 
     implementation 'com.google.android.exoplayer:exoplayer-core:2.6.1'
-    implementation 'com.google.android.exoplayer:extension-gvr:2.6.1'
     implementation 'com.google.vr:sdk-audio:1.120.0'
     implementation 'org.joml:joml:1.9.2'
 }

@@ -4,7 +4,7 @@ import android.content.Context
 import android.net.Uri
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioProcessor
-import com.google.android.exoplayer2.ext.gvr.GvrAudioProcessor
+import com.google.android.exoplayer2.ext.gvr.CustomGvrAudioProcessor
 import com.google.android.exoplayer2.source.ExtractorMediaSource
 import com.google.android.exoplayer2.source.TrackGroupArray
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
@@ -13,7 +13,7 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 
 class VSAPlayer(context: Context) : Player.EventListener {
 
-    private val audioProcessor = GvrAudioProcessor()
+    private val audioProcessor = CustomGvrAudioProcessor()
     private val dataSourceFactory = DefaultDataSourceFactory(context, context.packageName)
     private val exoPlayer: SimpleExoPlayer
 
