@@ -88,5 +88,5 @@ class VSAPlayer(context: Context) : Player.EventListener {
     override fun onPositionDiscontinuity(reason: Int) {}
     override fun onRepeatModeChanged(repeatMode: Int) {}
     override fun onShuffleModeEnabledChanged(shuffleModeEnabled: Boolean) {}
-    override fun onTimelineChanged(timeline: Timeline?, manifest: Any?) {}
+    override fun onTimelineChanged(timeline: Timeline?, manifest: Any?, reason: Int) {}
 }

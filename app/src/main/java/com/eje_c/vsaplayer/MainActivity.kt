@@ -9,9 +9,9 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.net.Uri
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.Gravity
 import android.widget.SeekBar
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.main_activity.*
 import org.joml.Quaternionf
 import kotlin.concurrent.thread
@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
         // ツールバーメニューをタップでドロワーを開く
         toolbar.setNavigationOnClickListener {
-            drawerLayout.openDrawer(Gravity.START)
+            drawerLayout.openDrawer(Gravity.LEFT)
         }
 
         // ナビゲーションメニュー
@@ -85,8 +85,8 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
             // Create quaternion
             headOrientation.identity()
-                    .rotateY(angleRad)
-                    .invert()
+                .rotateY(angleRad)
+                .invert()
 
             // Update player
             player.updateOrientation(headOrientation.x, headOrientation.y, headOrientation.z, headOrientation.w)
@@ -106,7 +106,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         }
 
         // 初期表示状態
-        drawerLayout.openDrawer(Gravity.START)
+        drawerLayout.openDrawer(Gravity.LEFT)
         playPauseButton.isEnabled = false
     }
 
@@ -170,7 +170,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     private fun performFileSearch() {
 
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
-                .setType("*/*")
+            .setType("*/*")
 
         startActivityForResult(intent, READ_REQUEST_CODE)
     }
