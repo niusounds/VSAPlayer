@@ -13,7 +13,7 @@ import com.google.android.exoplayer2.ext.gvr.CustomGvrAudioProcessor
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 
-class VSAPlayer(context: Context) : Player.EventListener {
+class VSAPlayer(context: Context) : Player.Listener {
 
     private val audioProcessor = CustomGvrAudioProcessor()
     private val dataSourceFactory = DefaultDataSourceFactory(context, context.packageName)
