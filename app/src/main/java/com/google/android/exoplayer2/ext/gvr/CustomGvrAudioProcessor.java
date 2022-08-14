@@ -79,17 +79,16 @@ public final class CustomGvrAudioProcessor implements AudioProcessor {
   }
 
   @Override
-  public synchronized boolean configure(int sampleRateHz, int channelCount,
-      @C.Encoding int encoding) throws UnhandledFormatException {
-    if (encoding != C.ENCODING_PCM_16BIT) {
+  public AudioFormat configure(AudioFormat inputAudioFormat) throws UnhandledAudioFormatException {
+    if (inputAudioFormat.encoding != C.ENCODING_PCM_16BIT) {
       maybeReleaseGvrAudioSurround();
-      throw new UnhandledFormatException(sampleRateHz, channelCount, encoding);
+      throw new UnhandledAudioFormatException(inputAudioFormat);
     }
-    if (this.sampleRateHz == sampleRateHz && this.channelCount == channelCount) {
-      return false;
+    if (this.sampleRateHz == inputAudioFormat.sampleRate && this.channelCount == inputAudioFormat.channelCount) {
+      return inputAudioFormat;
     }
-    this.sampleRateHz = sampleRateHz;
-    this.channelCount = channelCount;
+    this.sampleRateHz = inputAudioFormat.sampleRate;
+    this.channelCount = inputAudioFormat.channelCount;
     maybeReleaseGvrAudioSurround();
     int surroundFormat;
     switch (channelCount) {
@@ -118,7 +117,7 @@ public final class CustomGvrAudioProcessor implements AudioProcessor {
         surroundFormat = GvrAudioSurround.SurroundFormat.THIRD_ORDER_AMBISONICS_WITH_NON_DIEGETIC_STEREO;
         break;
       default:
-        throw new UnhandledFormatException(sampleRateHz, channelCount, encoding);
+        throw new UnhandledAudioFormatException(inputAudioFormat);
     }
     gvrAudioSurround = new GvrAudioSurround(surroundFormat, sampleRateHz, channelCount,
         FRAMES_PER_OUTPUT_BUFFER);
@@ -127,27 +126,12 @@ public final class CustomGvrAudioProcessor implements AudioProcessor {
       buffer = ByteBuffer.allocateDirect(FRAMES_PER_OUTPUT_BUFFER * OUTPUT_FRAME_SIZE)
           .order(ByteOrder.nativeOrder());
     }
-    return true;
+    return inputAudioFormat;
   }
 
   @Override
   public boolean isActive() {
     return gvrAudioSurround != null;
-  }
-
-  @Override
-  public int getOutputChannelCount() {
-    return OUTPUT_CHANNEL_COUNT;
-  }
-
-  @Override
-  public int getOutputEncoding() {
-    return C.ENCODING_PCM_16BIT;
-  }
-
-  @Override
-  public int getOutputSampleRateHz() {
-    return sampleRateHz;
   }
 
   @Override

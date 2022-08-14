@@ -2,20 +2,22 @@ package com.eje_c.vsaplayer
 
 import android.content.Context
 import android.net.Uri
-import com.google.android.exoplayer2.*
-import com.google.android.exoplayer2.audio.AudioProcessor
+import com.google.android.exoplayer2.DefaultRenderersFactory
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.audio.AudioCapabilities
+import com.google.android.exoplayer2.audio.AudioSink
+import com.google.android.exoplayer2.audio.DefaultAudioSink
 import com.google.android.exoplayer2.ext.gvr.CustomGvrAudioProcessor
-import com.google.android.exoplayer2.source.ExtractorMediaSource
-import com.google.android.exoplayer2.source.TrackGroupArray
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import com.google.android.exoplayer2.source.ProgressiveMediaSource
+import com.google.android.exoplayer2.upstream.DefaultDataSource
 
-class VSAPlayer(context: Context) : Player.EventListener {
+class VSAPlayer(context: Context) : Player.Listener {
 
     private val audioProcessor = CustomGvrAudioProcessor()
-    private val dataSourceFactory = DefaultDataSourceFactory(context, context.packageName)
-    private val exoPlayer: SimpleExoPlayer
+    private val dataSourceFactory = DefaultDataSource.Factory(context)
+    private val exoPlayer: ExoPlayer
 
     /**
      * Callback for playback completion.
@@ -41,18 +43,28 @@ class VSAPlayer(context: Context) : Player.EventListener {
     init {
 
         val renderersFactory = object : DefaultRenderersFactory(context) {
-            override fun buildAudioProcessors(): Array<AudioProcessor> {
-                return arrayOf(audioProcessor)
+            override fun buildAudioSink(
+                context: Context,
+                enableFloatOutput: Boolean,
+                enableAudioTrackPlaybackParams: Boolean,
+                enableOffload: Boolean
+            ): AudioSink? {
+                return DefaultAudioSink.Builder()
+                    .setAudioCapabilities(AudioCapabilities.DEFAULT_AUDIO_CAPABILITIES)
+                    .setAudioProcessors(arrayOf(audioProcessor))
+                    .build()
             }
         }
 
-        exoPlayer = ExoPlayerFactory.newSimpleInstance(renderersFactory, DefaultTrackSelector())
+        exoPlayer = ExoPlayer.Builder(context, renderersFactory).build()
         exoPlayer.addListener(this)
     }
 
     fun prepare(uri: Uri) {
-        val mediaSource = ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(uri)
-        exoPlayer.prepare(mediaSource)
+        val mediaSource = ProgressiveMediaSource.Factory(dataSourceFactory)
+            .createMediaSource(MediaItem.fromUri(uri))
+        exoPlayer.setMediaSource(mediaSource)
+        exoPlayer.prepare()
     }
 
     fun play() {
@@ -79,14 +91,4 @@ class VSAPlayer(context: Context) : Player.EventListener {
             }
         }
     }
-
-    override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters?) {}
-    override fun onSeekProcessed() {}
-    override fun onTracksChanged(trackGroups: TrackGroupArray?, trackSelections: TrackSelectionArray?) {}
-    override fun onPlayerError(error: ExoPlaybackException?) {}
-    override fun onLoadingChanged(isLoading: Boolean) {}
-    override fun onPositionDiscontinuity(reason: Int) {}
-    override fun onRepeatModeChanged(repeatMode: Int) {}
-    override fun onShuffleModeEnabledChanged(shuffleModeEnabled: Boolean) {}
-    override fun onTimelineChanged(timeline: Timeline?, manifest: Any?, reason: Int) {}
 }
