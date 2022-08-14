@@ -12,12 +12,13 @@ import android.os.Bundle
 import android.view.Gravity
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.main_activity.*
+import com.eje_c.vsaplayer.databinding.MainActivityBinding
 import org.joml.Quaternionf
 import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity(), SensorEventListener {
 
+    private lateinit var binding: MainActivityBinding
     private lateinit var sensorManager: SensorManager
     private lateinit var player: VSAPlayer
     private var seeking: Boolean = false
@@ -26,7 +27,8 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_activity)
+        binding = MainActivityBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         player = VSAPlayer(this)
@@ -35,12 +37,12 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         player.onPlayEnd = this@MainActivity::pause
 
         // ツールバーメニューをタップでドロワーを開く
-        toolbar.setNavigationOnClickListener {
-            drawerLayout.openDrawer(Gravity.LEFT)
+        binding.toolbar.setNavigationOnClickListener {
+            binding.drawerLayout.openDrawer(Gravity.LEFT)
         }
 
         // ナビゲーションメニュー
-        navigationView.setNavigationItemSelectedListener { item ->
+        binding.navigationView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.menu_openFile -> {
                     performFileSearch()
@@ -51,7 +53,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         }
 
         // 再生・一時停止ボタン
-        playPauseButton.setOnClickListener {
+        binding.playPauseButton.setOnClickListener {
             if (player.isPlaying) {
                 pause()
             } else {
@@ -60,7 +62,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         }
 
         // シークバー操作
-        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
                     player.currentTimeInMillis = progress.toLong()
@@ -78,7 +80,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         })
 
         // 回転方向を反映
-        rotatorView.onAngleChanged = { angle ->
+        binding.rotatorView.onAngleChanged = { angle ->
 
             // Degrees to radians
             val angleRad = Math.toRadians(angle.toDouble()).toFloat()
@@ -92,10 +94,10 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             player.updateOrientation(headOrientation.x, headOrientation.y, headOrientation.z, headOrientation.w)
         }
 
-        useDeviceSensorCheck.setOnCheckedChangeListener { _, isChecked ->
+        binding.useDeviceSensorCheck.setOnCheckedChangeListener { _, isChecked ->
 
             // タッチコントロールの切り替え
-            rotatorView.touchControlEnabled = !isChecked
+            binding.rotatorView.touchControlEnabled = !isChecked
 
             // センサーを使用
             if (isChecked) {
@@ -106,8 +108,8 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         }
 
         // 初期表示状態
-        drawerLayout.openDrawer(Gravity.LEFT)
-        playPauseButton.isEnabled = false
+        binding.drawerLayout.openDrawer(Gravity.LEFT)
+        binding.playPauseButton.isEnabled = false
     }
 
     override fun onDestroy() {
@@ -118,7 +120,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     override fun onResume() {
         super.onResume()
 
-        if (useDeviceSensorCheck.isChecked) {
+        if (binding.useDeviceSensorCheck.isChecked) {
             registerSensorListener()
         }
     }
@@ -147,18 +149,19 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         } else {
             val value = event.values[0] - sensorValueOffset
             if (value < 0.0f) {
-                rotatorView.angle = value + 360
+                binding.rotatorView.angle = value + 360
             } else {
-                rotatorView.angle = value
+                binding.rotatorView.angle = value
             }
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             READ_REQUEST_CODE -> {
                 if (resultCode == Activity.RESULT_OK && data != null) {
-                    onPickFile(data.data)
+                    onPickFile(data.data!!)
                 }
             }
         }
@@ -184,13 +187,13 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         player.prepare(uri)
 
         // 再生停止ボタンを有効化
-        playPauseButton.isEnabled = true
+        binding.playPauseButton.isEnabled = true
 
         // 再生
         play()
 
         // ドロワーを閉じる
-        drawerLayout.closeDrawers()
+        binding.drawerLayout.closeDrawers()
     }
 
     /**
@@ -198,7 +201,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
      */
     private fun play() {
         player.play()
-        playPauseButton.setImageResource(R.drawable.ic_pause)
+        binding.playPauseButton.setImageResource(R.drawable.ic_pause)
 
         // 再生中は一定間隔でUIを更新
         thread {
@@ -215,7 +218,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     private fun pause() {
         player.pause()
         player.currentTimeInMillis = 0
-        playPauseButton.setImageResource(R.drawable.ic_play)
+        binding.playPauseButton.setImageResource(R.drawable.ic_play)
     }
 
     private fun updateSeekbar() {
@@ -225,12 +228,12 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         val durationInMillis = player.duration
         val currentTime = currentTimeInMillis.millisToTimeString()
         val duration = durationInMillis.millisToTimeString()
-        time.text = "$currentTime / $duration"
+        binding.time.text = "$currentTime / $duration"
 
         // 手動シーク中以外は、シークバーを更新
         if (!seeking) {
-            seekBar.max = durationInMillis.toInt()
-            seekBar.progress = currentTimeInMillis.toInt()
+            binding.seekBar.max = durationInMillis.toInt()
+            binding.seekBar.progress = currentTimeInMillis.toInt()
         }
 
     }
