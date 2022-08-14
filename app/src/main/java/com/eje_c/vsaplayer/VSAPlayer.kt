@@ -49,10 +49,10 @@ class VSAPlayer(context: Context) : Player.Listener {
                 enableAudioTrackPlaybackParams: Boolean,
                 enableOffload: Boolean
             ): AudioSink? {
-                return DefaultAudioSink(
-                    AudioCapabilities.DEFAULT_AUDIO_CAPABILITIES,
-                    DefaultAudioSink.DefaultAudioProcessorChain(audioProcessor).audioProcessors
-                )
+                return DefaultAudioSink.Builder()
+                    .setAudioCapabilities(AudioCapabilities.DEFAULT_AUDIO_CAPABILITIES)
+                    .setAudioProcessors(arrayOf(audioProcessor))
+                    .build()
             }
         }
 
