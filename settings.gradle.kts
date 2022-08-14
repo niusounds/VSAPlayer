@@ -14,4 +14,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "VSAPlayer"
-include ':app'
+include(":app")
