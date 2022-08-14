@@ -5,7 +5,9 @@ import android.net.Uri
 import com.google.android.exoplayer2.DefaultRenderersFactory
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.audio.AudioProcessor
+import com.google.android.exoplayer2.audio.AudioCapabilities
+import com.google.android.exoplayer2.audio.AudioSink
+import com.google.android.exoplayer2.audio.DefaultAudioSink
 import com.google.android.exoplayer2.ext.gvr.CustomGvrAudioProcessor
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
@@ -40,8 +42,16 @@ class VSAPlayer(context: Context) : Player.EventListener {
     init {
 
         val renderersFactory = object : DefaultRenderersFactory(context) {
-            override fun buildAudioProcessors(): Array<AudioProcessor> {
-                return arrayOf(audioProcessor)
+            override fun buildAudioSink(
+                context: Context,
+                enableFloatOutput: Boolean,
+                enableAudioTrackPlaybackParams: Boolean,
+                enableOffload: Boolean
+            ): AudioSink? {
+                return DefaultAudioSink(
+                    AudioCapabilities.DEFAULT_AUDIO_CAPABILITIES,
+                    DefaultAudioSink.DefaultAudioProcessorChain(audioProcessor).audioProcessors
+                )
             }
         }
 
@@ -51,7 +61,8 @@ class VSAPlayer(context: Context) : Player.EventListener {
 
     fun prepare(uri: Uri) {
         val mediaSource = ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(uri)
-        exoPlayer.prepare(mediaSource)
+        exoPlayer.setMediaSource(mediaSource)
+        exoPlayer.prepare()
     }
 
     fun play() {
