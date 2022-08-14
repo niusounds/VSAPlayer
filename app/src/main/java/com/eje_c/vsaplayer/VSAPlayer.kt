@@ -3,21 +3,21 @@ package com.eje_c.vsaplayer
 import android.content.Context
 import android.net.Uri
 import com.google.android.exoplayer2.DefaultRenderersFactory
+import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.audio.AudioCapabilities
 import com.google.android.exoplayer2.audio.AudioSink
 import com.google.android.exoplayer2.audio.DefaultAudioSink
 import com.google.android.exoplayer2.ext.gvr.CustomGvrAudioProcessor
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import com.google.android.exoplayer2.upstream.DefaultDataSource
 
 class VSAPlayer(context: Context) : Player.Listener {
 
     private val audioProcessor = CustomGvrAudioProcessor()
-    private val dataSourceFactory = DefaultDataSourceFactory(context, context.packageName)
-    private val exoPlayer: SimpleExoPlayer
+    private val dataSourceFactory = DefaultDataSource.Factory(context)
+    private val exoPlayer: ExoPlayer
 
     /**
      * Callback for playback completion.
@@ -56,7 +56,7 @@ class VSAPlayer(context: Context) : Player.Listener {
             }
         }
 
-        exoPlayer = SimpleExoPlayer.Builder(context, renderersFactory).build()
+        exoPlayer = ExoPlayer.Builder(context, renderersFactory).build()
         exoPlayer.addListener(this)
     }
 
