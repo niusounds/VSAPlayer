@@ -11,11 +11,16 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.withRotation
 import androidx.core.graphics.withTranslation
 
-class RotatorView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0) : View(context, attrs, defStyleAttr, defStyleRes) {
+class RotatorView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0,
+    defStyleRes: Int = 0
+) : View(context, attrs, defStyleAttr, defStyleRes) {
 
     private val linePaint = Paint().apply {
         strokeWidth = context.resources.getDimension(R.dimen.lineWidth)
-        color = ContextCompat.getColor(context, R.color.accent_material_dark)
+        color = ContextCompat.getColor(context, androidx.appcompat.R.color.accent_material_dark)
     }
 
     private val textPaint = Paint().apply {
