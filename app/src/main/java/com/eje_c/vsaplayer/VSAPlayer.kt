@@ -3,18 +3,11 @@ package com.eje_c.vsaplayer
 import android.content.Context
 import android.net.Uri
 import com.google.android.exoplayer2.DefaultRenderersFactory
-import com.google.android.exoplayer2.ExoPlaybackException
-import com.google.android.exoplayer2.ExoPlayerFactory
-import com.google.android.exoplayer2.PlaybackParameters
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.Timeline
 import com.google.android.exoplayer2.audio.AudioProcessor
 import com.google.android.exoplayer2.ext.gvr.CustomGvrAudioProcessor
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.source.TrackGroupArray
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 
 class VSAPlayer(context: Context) : Player.EventListener {
@@ -52,8 +45,7 @@ class VSAPlayer(context: Context) : Player.EventListener {
             }
         }
 
-        exoPlayer =
-            ExoPlayerFactory.newSimpleInstance(context, renderersFactory, DefaultTrackSelector())
+        exoPlayer = SimpleExoPlayer.Builder(context, renderersFactory).build()
         exoPlayer.addListener(this)
     }
 
@@ -86,19 +78,4 @@ class VSAPlayer(context: Context) : Player.EventListener {
             }
         }
     }
-
-    override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters?) {}
-    override fun onSeekProcessed() {}
-    override fun onTracksChanged(
-        trackGroups: TrackGroupArray?,
-        trackSelections: TrackSelectionArray?
-    ) {
-    }
-
-    override fun onPlayerError(error: ExoPlaybackException?) {}
-    override fun onLoadingChanged(isLoading: Boolean) {}
-    override fun onPositionDiscontinuity(reason: Int) {}
-    override fun onRepeatModeChanged(repeatMode: Int) {}
-    override fun onShuffleModeEnabledChanged(shuffleModeEnabled: Boolean) {}
-    override fun onTimelineChanged(timeline: Timeline?, manifest: Any?, reason: Int) {}
 }
