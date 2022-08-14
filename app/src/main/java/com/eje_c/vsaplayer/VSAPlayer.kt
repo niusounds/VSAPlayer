@@ -3,6 +3,7 @@ package com.eje_c.vsaplayer
 import android.content.Context
 import android.net.Uri
 import com.google.android.exoplayer2.DefaultRenderersFactory
+import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.audio.AudioCapabilities
@@ -60,7 +61,8 @@ class VSAPlayer(context: Context) : Player.EventListener {
     }
 
     fun prepare(uri: Uri) {
-        val mediaSource = ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(uri)
+        val mediaSource = ProgressiveMediaSource.Factory(dataSourceFactory)
+            .createMediaSource(MediaItem.fromUri(uri))
         exoPlayer.setMediaSource(mediaSource)
         exoPlayer.prepare()
     }

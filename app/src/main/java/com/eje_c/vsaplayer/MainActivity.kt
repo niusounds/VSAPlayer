@@ -205,8 +205,12 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
         // 再生中は一定間隔でUIを更新
         thread {
-            while (player.isPlaying) {
-                runOnUiThread(this@MainActivity::updateSeekbar)
+            while (true) {
+                runOnUiThread {
+                    if (player.isPlaying) {
+                        updateSeekbar()
+                    }
+                }
                 Thread.sleep(100)
             }
         }
