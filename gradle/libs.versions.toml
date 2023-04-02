@@ -1,0 +1,17 @@
+[versions]
+androidxCore = "1.8.0"
+androidxAppCompat = "1.5.0"
+constraintlayout = "2.1.4"
+material = "1.6.1"
+exoplayer = "2.18.1"
+gvraudio = "1.120.0"
+joml = "1.9.2"
+
+[libraries]
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidxAppCompat" }
+constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
+material = { module = "com.google.android.material:material", version.ref = "material" }
+exoplayer = { module = "com.google.android.exoplayer:exoplayer-core", version.ref = "exoplayer" }
+gvraudio = { module = "com.google.vr:sdk-audio", version.ref = "gvraudio" }
+joml = { module = "org.joml:joml", version.ref = "joml" }

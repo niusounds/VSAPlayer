@@ -29,11 +29,11 @@ android {
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.8.0")
-    implementation("androidx.appcompat:appcompat:1.5.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("com.google.android.material:material:1.6.1")
-    implementation("com.google.android.exoplayer:exoplayer-core:2.18.1")
-    implementation("com.google.vr:sdk-audio:1.120.0")
-    implementation("org.joml:joml:1.9.2")
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.constraintlayout)
+    implementation(libs.material)
+    implementation(libs.exoplayer)
+    implementation(libs.gvraudio)
+    implementation(libs.joml)
 }
