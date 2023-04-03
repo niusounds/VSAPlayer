@@ -5,7 +5,7 @@ androidxCore = "1.8.0"
 constraintlayout = "2.1.4"
 exoplayer = "2.18.1"
 gvraudio = "1.120.0"
-joml = "1.9.2"
+joml = "1.10.5"
 kotlin = "1.8.10"
 material = "1.6.1"
 
