@@ -7,7 +7,7 @@ exoplayer = "2.18.1"
 gvraudio = "1.120.0"
 joml = "1.10.5"
 kotlin = "1.8.10"
-material = "1.6.1"
+material = "1.8.0"
 
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
