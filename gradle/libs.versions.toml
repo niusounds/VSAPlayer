@@ -3,7 +3,7 @@ androidGradlePlugin = "7.4.2"
 androidxAppCompat = "1.6.1"
 androidxCore = "1.10.0"
 constraintlayout = "2.1.4"
-exoplayer = "2.18.5"
+media3 = "1.0.0"
 gvraudio = "1.180.0"
 joml = "1.10.5"
 kotlin = "1.8.20"
@@ -14,7 +14,7 @@ androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidxAppCompat" }
 constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
-exoplayer = { module = "com.google.android.exoplayer:exoplayer-core", version.ref = "exoplayer" }
+exoplayer = { module = "androidx.media3:media3-exoplayer", version.ref = "media3" }
 gvraudio = { module = "com.google.vr:sdk-audio", version.ref = "gvraudio" }
 joml = { module = "org.joml:joml", version.ref = "joml" }
 

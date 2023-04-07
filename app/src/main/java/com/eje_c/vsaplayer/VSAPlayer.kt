@@ -2,17 +2,18 @@ package com.eje_c.vsaplayer
 
 import android.content.Context
 import android.net.Uri
-import com.google.android.exoplayer2.DefaultRenderersFactory
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.audio.AudioCapabilities
-import com.google.android.exoplayer2.audio.AudioSink
-import com.google.android.exoplayer2.audio.DefaultAudioSink
+import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
+import androidx.media3.datasource.DefaultDataSource
+import androidx.media3.exoplayer.DefaultRenderersFactory
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.audio.AudioCapabilities
+import androidx.media3.exoplayer.audio.AudioSink
+import androidx.media3.exoplayer.audio.DefaultAudioSink
+import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.ext.gvr.CustomGvrAudioProcessor
-import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.upstream.DefaultDataSource
 
+@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
 class VSAPlayer(context: Context) : Player.Listener {
 
     private val audioProcessor = CustomGvrAudioProcessor()
