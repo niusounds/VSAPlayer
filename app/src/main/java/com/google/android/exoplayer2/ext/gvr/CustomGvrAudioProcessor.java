@@ -15,23 +15,24 @@
  */
 package com.google.android.exoplayer2.ext.gvr;
 
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.ExoPlayerLibraryInfo;
-import com.google.android.exoplayer2.Format;
-import com.google.android.exoplayer2.audio.AudioProcessor;
+import androidx.media3.common.C;
+import androidx.media3.common.Format;
+import androidx.media3.common.audio.AudioProcessor;
+import androidx.media3.common.util.UnstableApi;
+
 import com.google.vr.sdk.audio.GvrAudioSurround;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-/**
+@UnstableApi /**
  * An {@link AudioProcessor} that uses {@code GvrAudioSurround} to provide binaural rendering of
  * surround sound and ambisonic soundfields.
  */
 public final class CustomGvrAudioProcessor implements AudioProcessor {
 
   static {
-    ExoPlayerLibraryInfo.registerModule("goog.exo.gvr");
+//    ExoPlayerLibraryInfo.registerModule("goog.exo.gvr");
   }
 
   private static final int FRAMES_PER_OUTPUT_BUFFER = 1024;
