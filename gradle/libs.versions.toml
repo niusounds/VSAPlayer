@@ -1,7 +1,7 @@
 [versions]
 androidGradlePlugin = "7.4.2"
 androidxAppCompat = "1.5.0"
-androidxCore = "1.8.0"
+androidxCore = "1.10.0"
 constraintlayout = "2.1.4"
 exoplayer = "2.18.1"
 gvraudio = "1.120.0"
