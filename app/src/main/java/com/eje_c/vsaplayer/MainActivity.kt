@@ -1,8 +1,6 @@
 package com.eje_c.vsaplayer
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -11,13 +9,19 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.Gravity
 import android.widget.SeekBar
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.eje_c.vsaplayer.databinding.MainActivityBinding
 import org.joml.Quaternionf
 import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity(), SensorEventListener {
-
+    private val pickFile =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { result ->
+            if (result != null) {
+                onPickFile(result)
+            }
+        }
     private lateinit var binding: MainActivityBinding
     private lateinit var sensorManager: SensorManager
     private lateinit var player: VSAPlayer
@@ -91,7 +95,12 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                 .invert()
 
             // Update player
-            player.updateOrientation(headOrientation.x, headOrientation.y, headOrientation.z, headOrientation.w)
+            player.updateOrientation(
+                headOrientation.x,
+                headOrientation.y,
+                headOrientation.z,
+                headOrientation.w
+            )
         }
 
         binding.useDeviceSensorCheck.setOnCheckedChangeListener { _, isChecked ->
@@ -156,26 +165,11 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        when (requestCode) {
-            READ_REQUEST_CODE -> {
-                if (resultCode == Activity.RESULT_OK && data != null) {
-                    onPickFile(data.data!!)
-                }
-            }
-        }
-    }
-
     /**
      * ファイルを開く
      */
     private fun performFileSearch() {
-
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
-            .setType("*/*")
-
-        startActivityForResult(intent, READ_REQUEST_CODE)
+        pickFile.launch("*/*")
     }
 
     /**
@@ -240,9 +234,5 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             binding.seekBar.progress = currentTimeInMillis.toInt()
         }
 
-    }
-
-    companion object {
-        private val READ_REQUEST_CODE = 42
     }
 }
