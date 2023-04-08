@@ -24,6 +24,10 @@ fun Rotator(
     lineColor: Color = MaterialTheme.colorScheme.primary,
     lineWidth: Float = 4f,
     lineCircleSize: Float = 8f,
+    labelFront: String = "Front",
+    labelRight: String = "Front",
+    labelBack: String = "Front",
+    labelLeft: String = "Front",
 ) {
     Box(modifier.aspectRatio(1f)) {
         Canvas(modifier = Modifier.fillMaxSize()) {
@@ -50,26 +54,26 @@ fun Rotator(
         }
 
         Text(
-            text = "Front",
+            text = labelFront,
             modifier = Modifier.align(Alignment.TopCenter),
         )
 
         Text(
-            text = "Right",
+            text = labelRight,
             modifier = Modifier
                 .align(Alignment.CenterEnd)
                 .graphicsLayer(rotationZ = 90f)
         )
 
         Text(
-            text = "Bottom",
+            text = labelBack,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .graphicsLayer(rotationZ = 180f)
         )
 
         Text(
-            text = "Left",
+            text = labelLeft,
             modifier = Modifier
                 .align(Alignment.CenterStart)
                 .graphicsLayer(rotationZ = 270f)

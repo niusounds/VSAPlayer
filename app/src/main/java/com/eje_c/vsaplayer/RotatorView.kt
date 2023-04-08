@@ -9,6 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import com.niusounds.vsaplayer.Rotator
 
 class RotatorView @JvmOverloads constructor(
@@ -39,6 +40,10 @@ class RotatorView @JvmOverloads constructor(
             lineColor = colorResource(id = androidx.appcompat.R.color.accent_material_dark),
             lineWidth = context.resources.getDimension(R.dimen.lineWidth),
             lineCircleSize = context.resources.getDimension(R.dimen.lineCircleSize),
+            labelFront = stringResource(id = R.string.front),
+            labelRight = stringResource(id = R.string.right),
+            labelBack = stringResource(id = R.string.back),
+            labelLeft = stringResource(id = R.string.left),
         )
     }
 
