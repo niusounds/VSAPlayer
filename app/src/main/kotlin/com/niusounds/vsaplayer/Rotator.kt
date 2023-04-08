@@ -25,9 +25,9 @@ fun Rotator(
     lineWidth: Float = 4f,
     lineCircleSize: Float = 8f,
     labelFront: String = "Front",
-    labelRight: String = "Front",
-    labelBack: String = "Front",
-    labelLeft: String = "Front",
+    labelRight: String = "Right",
+    labelBack: String = "Back",
+    labelLeft: String = "Left",
 ) {
     Box(modifier.aspectRatio(1f)) {
         Canvas(modifier = Modifier.fillMaxSize()) {
