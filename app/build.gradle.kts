@@ -4,6 +4,7 @@ plugins {
 }
 
 android {
+    namespace = "com.eje_c.vsaplayer"
     compileSdk = 33
     defaultConfig {
         applicationId = "com.eje_c.vsaplayer"
