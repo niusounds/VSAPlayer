@@ -1,9 +1,6 @@
 package com.eje_c.vsaplayer
 
 import android.content.Context
-import android.hardware.Sensor
-import android.hardware.SensorEvent
-import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.net.Uri
 import android.os.Bundle
@@ -11,11 +8,15 @@ import android.view.Gravity
 import android.widget.SeekBar
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.eje_c.vsaplayer.databinding.MainActivityBinding
+import com.niusounds.vsaplayer.orientationFlow
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import org.joml.Quaternionf
 import kotlin.concurrent.thread
 
-class MainActivity : AppCompatActivity(), SensorEventListener {
+class MainActivity : AppCompatActivity() {
     private val pickFile =
         registerForActivityResult(ActivityResultContracts.GetContent()) { result ->
             if (result != null) {
@@ -27,7 +28,6 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var player: VSAPlayer
     private var seeking: Boolean = false
     private val headOrientation = Quaternionf()
-    private var sensorValueOffset: Float = -1.0f
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +52,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                     performFileSearch()
                     true
                 }
+
                 else -> false
             }
         }
@@ -134,11 +135,25 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         }
     }
 
-    private fun registerSensorListener() {
-        sensorValueOffset = -1.0f
+    private var sensorCollectJob: Job? = null
 
-        val sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION)
-        sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_UI)
+    private fun registerSensorListener() {
+        var sensorValueOffset = -1.0f
+
+        sensorCollectJob = lifecycleScope.launch {
+            sensorManager.orientationFlow().collect { event ->
+                if (sensorValueOffset < 0.0f) {
+                    sensorValueOffset = event.values[0]
+                } else {
+                    val value = event.values[0] - sensorValueOffset
+                    if (value < 0.0f) {
+                        binding.rotatorView.angle = value + 360
+                    } else {
+                        binding.rotatorView.angle = value
+                    }
+                }
+            }
+        }
     }
 
     override fun onPause() {
@@ -147,22 +162,8 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     }
 
     private fun unregisterSensorListener() {
-        sensorManager.unregisterListener(this)
-    }
-
-    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
-
-    override fun onSensorChanged(event: SensorEvent) {
-        if (sensorValueOffset < 0.0f) {
-            sensorValueOffset = event.values[0]
-        } else {
-            val value = event.values[0] - sensorValueOffset
-            if (value < 0.0f) {
-                binding.rotatorView.angle = value + 360
-            } else {
-                binding.rotatorView.angle = value
-            }
-        }
+        sensorCollectJob?.cancel()
+        sensorCollectJob = null
     }
 
     /**
