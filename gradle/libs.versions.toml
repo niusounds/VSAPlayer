@@ -1,16 +1,16 @@
 [versions]
-activity-compose = "1.7.0"
-androidGradlePlugin = "7.4.2"
+activity-compose = "1.8.1"
+androidGradlePlugin = "8.1.4"
 androidxAppCompat = "1.6.1"
-androidxCore = "1.10.0"
-composeBom = "2023.04.00"
+androidxCore = "1.12.0"
+composeBom = "2023.10.01"
 constraintlayout = "2.1.4"
 gvraudio = "1.180.0"
 joml = "1.10.5"
-kotlin = "1.8.10"
-lifecycle-runtime-ktx = "2.6.1"
-material = "1.8.0"
-media3 = "1.0.0"
+kotlin = "1.9.20"
+lifecycle-runtime-ktx = "2.6.2"
+material = "1.10.0"
+media3 = "1.2.0"
 
 [libraries]
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
