@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.eje_c.vsaplayer"
-    compileSdk = 33
+    compileSdk = 34
     defaultConfig {
         applicationId = "com.eje_c.vsaplayer"
         minSdk = 21
@@ -32,7 +32,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.4"
+        kotlinCompilerExtensionVersion = "1.5.5"
     }
 }
 
