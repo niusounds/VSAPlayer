@@ -1,29 +1,78 @@
-name: Android CI
+name: Build and release app
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
-  build:
+  Android:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v4
-      - name: set up JDK
-        uses: actions/setup-java@v4
+
+      - uses: actions/checkout@v3
         with:
+          fetch-depth: '0'
+
+      - name: Get commit hash
+        run: echo "CommitHashShort=$(git rev-parse --short=7 HEAD)" >> $GITHUB_ENV
+
+      - name: Get commit count
+        run: echo "CommitCount=$(git rev-list --count HEAD)" >> $GITHUB_ENV
+
+      - name: Get current date
+        run: echo "CurrentDate=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+
+      - name: Set Up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
           java-version: '17'
-          distribution: 'temurin'
+          cache: 'gradle'
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+      - name: Change wrapper permissions
+        run: chmod +x ./gradlew
 
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
+      - name: Run gradle tests
+        run: ./gradlew test
+
+      - name: Build gradle project
+        run: ./gradlew build
+
+      - name: Build apk debug project (APK) - app module
+        run: ./gradlew assembleDebug
+
+      - name: Build apk release project (APK) - app module
+        run: ./gradlew assemble
+
+      - name: Build app bundle release (AAB) - app module
+        run: ./gradlew app:bundleRelease
+
+      - name: Upload APK Debug - ${{github.event.repository.name}}
+        uses: actions/upload-artifact@v3
         with:
-          arguments: build
+          name: ${{env.CurrentDate}}_${{github.event.repository.name}}_r${{env.CommitCount}}@${{env.CommitHashShort}} - Debug
+          path: app/build/outputs/apk/debug/
+
+      - name: Upload APK Release - ${{github.event.repository.name}}
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{env.CurrentDate}}_${{github.event.repository.name}}_r${{env.CommitCount}}@${{env.CommitHashShort}} - Release
+          path: app/build/outputs/apk/release/
+
+      - name: Upload AAB (App Bundle) Release - ${{github.event.repository.name}}
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{env.CurrentDate}}_${{github.event.repository.name}}_r${{env.CommitCount}}@${{env.CommitHashShort}} - App bundle
+          path: app/build/outputs/bundle/release/
+
+      - name: Copy APK
+        run: cp "app/build/outputs/apk/debug/app-debug.apk" "app/build/outputs/apk/debug/${{github.event.repository.name}}.apk"
+
+      - name: GitHub pre-release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{secrets.GITHUB_TOKEN}}"
+          automatic_release_tag: "latest"
+          prerelease: false
+          title: "[${{env.CurrentDate}}] ${{github.event.repository.name}} r${{env.CommitCount}}@${{env.CommitHashShort}}"
+          files: "app/build/outputs/apk/debug/${{github.event.repository.name}}.apk"
