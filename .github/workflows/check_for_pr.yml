@@ -1,4 +1,4 @@
-name: Android CI
+name: Check for PR
 
 on:
   push:
