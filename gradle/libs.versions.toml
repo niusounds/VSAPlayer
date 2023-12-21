@@ -1,15 +1,15 @@
 [versions]
-activity-compose = "1.8.1"
-androidGradlePlugin = "8.1.4"
+activity-compose = "1.8.2"
+androidGradlePlugin = "8.2.0"
 androidxAppCompat = "1.6.1"
 androidxCore = "1.12.0"
 composeBom = "2023.10.01"
 constraintlayout = "2.1.4"
-gvraudio = "1.180.0"
+gvraudio = "1.190.0"
 joml = "1.10.5"
-kotlin = "1.9.20"
+kotlin = "1.9.22"
 lifecycle-runtime-ktx = "2.6.2"
-material = "1.10.0"
+material = "1.11.0"
 media3 = "1.2.0"
 
 [libraries]
